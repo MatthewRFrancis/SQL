@@ -1,0 +1,11 @@
+#Table containing 3 entries consisting of Player ID, Username, highest level, and highscore
+
+
+CREATE TABLE candycrush (player_id INTEGER PRIMARY KEY, player_name TEXT, 
+    level INTEGER, 
+    highest_score INTEGER);
+    
+INSERT INTO candycrush (player_name, level, highest_score) VALUES ('tarmakworm',245,5008867);
+INSERT INTO candycrush (player_name, level, highest_score) VALUES ('blessedjesus',45,5599966);
+INSERT INTO candycrush (player_name, level, highest_score) VALUES ('ropadopa47', 2, 45678);
+
