@@ -1,0 +1,190 @@
+#Miscellaneous SQL queries#
+~~Tables for these were not created by me and were available via the SQL course on Khan Academy~~
+
+~~Challenge: FriendBook~~
+CREATE TABLE persons (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fullname TEXT,
+    age INTEGER);
+    
+INSERT INTO persons (fullname, age) VALUES ("Bobby McBobbyFace", "12");
+INSERT INTO persons (fullname, age) VALUES ("Lucy BoBucie", "25");
+INSERT INTO persons (fullname, age) VALUES ("Banana FoFanna", "14");
+INSERT INTO persons (fullname, age) VALUES ("Shish Kabob", "20");
+INSERT INTO persons (fullname, age) VALUES ("Fluffy Sparkles", "8");
+
+CREATE table hobbies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person_id INTEGER,
+    name TEXT);
+    
+INSERT INTO hobbies (person_id, name) VALUES (1, "drawing");
+INSERT INTO hobbies (person_id, name) VALUES (1, "coding");
+INSERT INTO hobbies (person_id, name) VALUES (2, "dancing");
+INSERT INTO hobbies (person_id, name) VALUES (2, "coding");
+INSERT INTO hobbies (person_id, name) VALUES (3, "skating");
+INSERT INTO hobbies (person_id, name) VALUES (3, "rowing");
+INSERT INTO hobbies (person_id, name) VALUES (3, "drawing");
+INSERT INTO hobbies (person_id, name) VALUES (4, "coding");
+INSERT INTO hobbies (person_id, name) VALUES (4, "dilly-dallying");
+INSERT INTO hobbies (person_id, name) VALUES (4, "meowing");
+
+CREATE table friends (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person1_id INTEGER,
+    person2_id INTEGER);
+
+INSERT INTO friends (person1_id, person2_id)
+    VALUES (1, 4);
+INSERT INTO friends (person1_id, person2_id)
+    VALUES (2, 3);
+SELECT fullname, name FROM persons
+JOIN hobbies ON persons.id = hobbies.person_id;
+
+
+SELECT person.fullname , friend.fullname
+FROM friends JOIN persons as person
+on person.id = friends.person1_id
+JOIN persons as friend
+on friend.id = friends.person2_id;
+
+~~Challenge: Sequels in SQL~~
+
+CREATE TABLE movies (id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    released INTEGER,
+    sequel_id INTEGER);
+
+INSERT INTO movies 
+    VALUES (1, "Harry Potter and the Philosopher's Stone", 2001, 2);
+INSERT INTO movies 
+    VALUES (2, "Harry Potter and the Chamber of Secrets", 2002, 3);
+INSERT INTO movies 
+    VALUES (3, "Harry Potter and the Prisoner of Azkaban", 2004, 4);
+INSERT INTO movies 
+    VALUES (4, "Harry Potter and the Goblet of Fire", 2005, 5);
+INSERT INTO movies 
+    VALUES (5, "Harry Potter and the Order of the Phoenix ", 2007, 6);
+INSERT INTO movies 
+    VALUES (6, "Harry Potter and the Half-Blood Prince", 2009, 7);
+INSERT INTO movies 
+    VALUES (7, "Harry Potter and the Deathly Hallows – Part 1", 2010, 8);
+INSERT INTO movies 
+    VALUES (8, "Harry Potter and the Deathly Hallows – Part 2", 2011, NULL);
+    
+SELECT movies.title, sequels.title FROM movies 
+LEFT OUTER JOIN movies sequels ON movies.sequel_id = sequels.id;
+
+CREATE TABLE customers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    email TEXT);
+    
+INSERT INTO customers (name, email) VALUES ("Doctor Who", "doctorwho@timelords.com");
+INSERT INTO customers (name, email) VALUES ("Harry Potter", "harry@potter.com");
+INSERT INTO customers (name, email) VALUES ("Captain Awesome", "captain@awesome.com");
+
+
+~~Challenge: Customer's orders~~
+CREATE TABLE orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    customer_id INTEGER,
+    item TEXT,
+    price REAL);
+
+INSERT INTO orders (customer_id, item, price)
+    VALUES (1, "Sonic Screwdriver", 1000.00);
+INSERT INTO orders (customer_id, item, price)
+    VALUES (2, "High Quality Broomstick", 40.00);
+INSERT INTO orders (customer_id, item, price)
+    VALUES (1, "TARDIS", 1000000.00);
+    
+        
+SELECT name, email, item, price FROM customers LEFT OUTER JOIN orders ON (customers.id = orders.customer_id);
+
+SELECT name, email, SUM(price) 
+FROM customers LEFT OUTER JOIN orders ON (customers.id = orders.customer_id)
+GROUP BY name 
+ORDER BY price DESC;
+
+~~Challenge: Gradebook~~
+
+CREATE TABLE student_grades (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    number_grade INTEGER,
+    fraction_completed REAL);
+    
+INSERT INTO student_grades (name, number_grade, fraction_completed)
+    VALUES ("Winston", 90, 0.805);
+INSERT INTO student_grades (name, number_grade, fraction_completed)
+    VALUES ("Winnefer", 95, 0.901);
+INSERT INTO student_grades (name, number_grade, fraction_completed)
+    VALUES ("Winsteen", 85, 0.906);
+INSERT INTO student_grades (name, number_grade, fraction_completed)
+    VALUES ("Wincifer", 66, 0.7054);
+INSERT INTO student_grades (name, number_grade, fraction_completed)
+    VALUES ("Winster", 76, 0.5013);
+INSERT INTO student_grades (name, number_grade, fraction_completed)
+    VALUES ("Winstonia", 82, 0.9045);
+
+SELECT name, number_grade, ROUND(fraction_completed * 100) AS "percent_completed" FROM student_grades;
+
+SELECT COUNT(*),
+    CASE 
+        WHEN number_grade > 90 THEN "A"
+        WHEN number_grade > 80 THEN "B"
+        WHEN number_grade > 70 THEN "C"
+        ELSE "F"
+        END AS "letter_grades" 
+FROM student_grades
+        GROUP BY "letter_grades";
+
+~~Challenge: The wordiest author~~
+
+CREATE TABLE books (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    author TEXT,
+    title TEXT,
+    words INTEGER);
+    
+INSERT INTO books (author, title, words)
+    VALUES ("J.K. Rowling", "Harry Potter and the Philosopher's Stone", 79944);
+INSERT INTO books (author, title, words)
+    VALUES ("J.K. Rowling", "Harry Potter and the Chamber of Secrets", 85141);
+INSERT INTO books (author, title, words)
+    VALUES ("J.K. Rowling", "Harry Potter and the Prisoner of Azkaban", 107253);
+INSERT INTO books (author, title, words)
+    VALUES ("J.K. Rowling", "Harry Potter and the Goblet of Fire", 190637);
+INSERT INTO books (author, title, words)
+    VALUES ("J.K. Rowling", "Harry Potter and the Order of the Phoenix", 257045);
+INSERT INTO books (author, title, words)
+    VALUES ("J.K. Rowling", "Harry Potter and the Half-Blood Prince", 168923);
+INSERT INTO books (author, title, words)
+    VALUES ("J.K. Rowling", "Harry Potter and the Deathly Hallows", 197651);
+
+INSERT INTO books (author, title, words)
+    VALUES ("Stephenie Meyer", "Twilight", 118501);
+INSERT INTO books (author, title, words)
+    VALUES ("Stephenie Meyer", "New Moon", 132807);
+INSERT INTO books (author, title, words)
+    VALUES ("Stephenie Meyer", "Eclipse", 147930);
+INSERT INTO books (author, title, words)
+    VALUES ("Stephenie Meyer", "Breaking Dawn", 192196);
+    
+INSERT INTO books (author, title, words)
+    VALUES ("J.R.R. Tolkien", "The Hobbit", 95022);
+INSERT INTO books (author, title, words)
+    VALUES ("J.R.R. Tolkien", "Fellowship of the Ring", 177227);
+INSERT INTO books (author, title, words)
+    VALUES ("J.R.R. Tolkien", "Two Towers", 143436);
+INSERT INTO books (author, title, words)
+    VALUES ("J.R.R. Tolkien", "Return of the King", 134462);
+    
+SELECT author, SUM(words) AS total_words FROM books
+    GROUP BY author
+    HAVING total_words > 1000000
+    ;
+SELECT author, AVG(words) AS avg_words FROM books
+    GROUP BY author
+    HAVING avg_words >150000;
