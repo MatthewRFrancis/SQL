@@ -10,3 +10,7 @@ INSERT INTO Spare_Parts VALUES (6, "484448440-Y-22", "Rope Netting", 42, "A44-02
 INSERT INTO Spare_Parts VALUES (7, "4938059-3-21", "White Adjustable Leveler", 143, "B-42C", 1);
 INSERT INTO Spare_Parts VALUES (8, "123587-6", "Leg Connector", 13, "AWALL15", 67);
 INSERT INTO Spare_Parts VALUES (9, "4748389-12-22", "Firepit", 13, "A04-07D", 488);
+
+SELECT Part_Code, Description, Bin_Location, Quantity from Spare_Parts
+WHERE Part_Code = '123587-6'
+Order by Bin_Location;
