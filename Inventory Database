@@ -14,3 +14,5 @@ INSERT INTO Spare_Parts VALUES (9, "4748389-12-22", "Firepit", 13, "A04-07D", 48
 SELECT Part_Code, Description, Bin_Location, Quantity from Spare_Parts
 WHERE Part_Code = '123587-6'
 Order by Bin_Location;
+SELECT * FROM Spare_Parts GROUP BY Bin_Location;
+SELECT SUM(Quantity) FROM Spare_Parts;
